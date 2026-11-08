@@ -1,0 +1,81 @@
+@base = http://localhost:3000
+@userId = 4
+
+### Health check
+GET {{base}}/health
+
+### Portfolio del usuario 1 (seed: valor total 889756.00)
+GET {{base}}/users/1/portfolio
+
+### Búsqueda: ticker o nombre (q)
+GET {{base}}/instruments/search?q=gal
+
+### Búsqueda: por nombre, paginada
+GET {{base}}/instruments/search?name=banco&limit=5&offset=0
+
+### Búsqueda: ticker y nombre combinados (AND)
+GET {{base}}/instruments/search?ticker=b&name=macro
+
+### 1. Transferencia entrante (CASH_IN, pesos enteros)
+POST {{base}}/orders
+Content-Type: application/json
+
+{ "userId": {{userId}}, "side": "CASH_IN", "type": "MARKET", "amount": 100000 }
+
+### 2. Compra MARKET por cantidad (se ejecuta al último close -> FILLED)
+POST {{base}}/orders
+Content-Type: application/json
+
+{ "userId": {{userId}}, "instrumentId": 47, "side": "BUY", "type": "MARKET", "size": 10 }
+
+### 3. Compra MARKET por monto en pesos (floor(5000 / 229.50) = 21 unidades)
+POST {{base}}/orders
+Content-Type: application/json
+
+{ "userId": {{userId}}, "instrumentId": 54, "side": "BUY", "type": "MARKET", "amount": "5000" }
+
+### 4. Compra LIMIT (queda NEW y reserva size * price)
+# @name limitOrder
+POST {{base}}/orders
+Content-Type: application/json
+
+{ "userId": {{userId}}, "instrumentId": 54, "side": "BUY", "type": "LIMIT", "size": 10, "price": "200" }
+
+### 5. Portfolio con la reserva de la LIMIT
+GET {{base}}/users/{{userId}}/portfolio
+
+### 6. Cancelar la orden LIMIT anterior (solo órdenes NEW)
+POST {{base}}/orders/{{limitOrder.response.body.id}}/cancel
+
+### 7. Venta MARKET
+POST {{base}}/orders
+Content-Type: application/json
+
+{ "userId": {{userId}}, "instrumentId": 47, "side": "SELL", "type": "MARKET", "size": 5 }
+
+### 8. Transferencia saliente (CASH_OUT)
+POST {{base}}/orders
+Content-Type: application/json
+
+{ "userId": {{userId}}, "side": "CASH_OUT", "type": "MARKET", "amount": 1000 }
+
+### 9. Fondos insuficientes -> 201 con status REJECTED (queda persistida)
+POST {{base}}/orders
+Content-Type: application/json
+
+{ "userId": {{userId}}, "instrumentId": 47, "side": "BUY", "type": "MARKET", "size": 1000 }
+
+### 10. Unidades insuficientes -> 201 con status REJECTED
+POST {{base}}/orders
+Content-Type: application/json
+
+{ "userId": {{userId}}, "instrumentId": 47, "side": "SELL", "type": "MARKET", "size": 999 }
+
+### 11. Request inválido -> 400 (LIMIT sin precio, no se persiste)
+POST {{base}}/orders
+Content-Type: application/json
+
+{ "userId": {{userId}}, "instrumentId": 47, "side": "BUY", "type": "LIMIT", "size": 1 }
+
+### 12. Portfolio final
+GET {{base}}/users/{{userId}}/portfolio
