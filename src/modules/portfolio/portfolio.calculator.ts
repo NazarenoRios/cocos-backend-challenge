@@ -3,12 +3,12 @@ import { Decimal, formatMoney, formatPercent, percentChange } from '../../shared
 import type { CashBalance, FilledTrade, Holding } from '../ledger/ledger.repository.js';
 import type { LatestPrice } from '../market/market.repository.js';
 
-export interface InstrumentInfo {
+interface InstrumentInfo {
   ticker: string | null;
   name: string | null;
 }
 
-export interface PortfolioInput {
+interface PortfolioInput {
   cash: CashBalance;
   holdings: Holding[];
   trades: FilledTrade[];

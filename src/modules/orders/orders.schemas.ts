@@ -7,7 +7,7 @@ const AMOUNT_MAX = '1000000000000';
 
 export type Quantity = { size: number } | { amount: string };
 
-export interface TradeBase {
+interface TradeBase {
   kind: 'trade';
   userId: number;
   instrumentId: number;

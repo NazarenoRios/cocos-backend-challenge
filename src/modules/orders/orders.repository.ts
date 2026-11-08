@@ -1,7 +1,7 @@
 import type { EntityManager } from 'typeorm';
 import { Order, OrderStatus, type OrderSide, type OrderType } from '../../db/entities/order.entity.js';
 
-export interface NewOrder {
+interface NewOrder {
   userId: number;
   instrumentId: number;
   side: OrderSide;

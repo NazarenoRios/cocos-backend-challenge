@@ -12,7 +12,7 @@ import { findOrder, findOrderForUpdate, insertOrder, markOrderCancelled } from '
 import type { PlaceOrderCommand, Quantity } from './orders.schemas.js';
 import { unitsForAmount } from './orders.sizing.js';
 
-export type RejectReason = 'INSUFFICIENT_FUNDS' | 'INSUFFICIENT_HOLDINGS';
+type RejectReason = 'INSUFFICIENT_FUNDS' | 'INSUFFICIENT_HOLDINGS';
 
 interface OrderDraft {
   instrument: Instrument;
