@@ -56,5 +56,10 @@
       "prettier --write"
     ],
     "*.{js,json,md,yml,yaml}": "prettier --write"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "printWidth": 120,
+    "trailingComma": "all"
   }
 }
