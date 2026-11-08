@@ -17,6 +17,17 @@ npm run dev            # http://localhost:3000
 
 Para producción: `npm run build && npm start`.
 
+### Con Docker
+
+Con el mismo `.env`:
+
+```bash
+docker compose up --build   # http://localhost:3000
+```
+
+La imagen es multi-stage (solo `dist/` y dependencias de producción), corre con un usuario sin privilegios y define
+un healthcheck sobre `/health`.
+
 ## Endpoints
 
 | Método | Ruta                                   | Descripción                                                 |
