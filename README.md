@@ -65,7 +65,7 @@ npm run check    # typecheck + lint + formato + tests
 ```
 
 Los tests **no usan la base provista**: levantan un Postgres descartable con Docker (Testcontainers) y lo cargan con
-[`db/database.sql`](./db/database.sql) antes de cada test, para no escribir datos de prueba en la base compartida.
+[`test/fixtures/database.sql`](./test/fixtures/database.sql), copia del archivo provisto, antes de cada test, para no escribir datos de prueba en la base compartida.
 El test funcional de envío de órdenes es [`test/orders.test.ts`](./test/orders.test.ts).
 
 ## Decisiones y supuestos

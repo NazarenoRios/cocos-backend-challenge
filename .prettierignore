@@ -2,4 +2,4 @@ dist
 node_modules
 coverage
 package-lock.json
-db/database.sql
+test/fixtures/database.sql

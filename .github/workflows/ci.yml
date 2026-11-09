@@ -37,7 +37,7 @@ jobs:
           docker network create smoke
           docker run -d --name db --network smoke \
             -e POSTGRES_USER=cocos -e POSTGRES_PASSWORD=cocos -e POSTGRES_DB=cocos \
-            -v "$PWD/db/database.sql:/docker-entrypoint-initdb.d/database.sql:ro" \
+            -v "$PWD/test/fixtures/database.sql:/docker-entrypoint-initdb.d/database.sql:ro" \
             postgres:18-alpine
           timeout 60 sh -c 'until docker exec db psql -h 127.0.0.1 -U cocos -d cocos -c "SELECT 1 FROM orders LIMIT 1" >/dev/null 2>&1; do sleep 1; done'
           docker run -d --name api --network smoke -p 3000:3000 \

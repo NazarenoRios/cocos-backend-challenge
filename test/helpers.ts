@@ -9,7 +9,7 @@ import { Order, OrderSide, OrderStatus, OrderType } from '../src/db/entities/ord
 import { User } from '../src/db/entities/user.entity.js';
 import { createLogger } from '../src/shared/logger.js';
 
-const seedSql = readFileSync(fileURLToPath(new URL('../db/database.sql', import.meta.url)), 'utf8');
+const seedSql = readFileSync(fileURLToPath(new URL('./fixtures/database.sql', import.meta.url)), 'utf8');
 
 export const SEED_INSTRUMENTS = {
   ARS: 66,
